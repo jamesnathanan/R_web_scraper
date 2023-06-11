@@ -98,11 +98,27 @@ scrape_ship_details <- function(ship_url) {
       # Retrieve the existing ship details
       existing_ship_details <- ship_data[ship_data$IMO == imo_vector[counter], ]
       
-      # Append the new Latitude and Longitude as new columns
-      existing_ship_details[[paste0("LAT_", start_timestamp)]] <- latitude
-      existing_ship_details[[paste0("LON_", start_timestamp)]] <- longitude
+      # UPDATED
+      # Update the existing ship details with new values
+      updated_ship_details <- existing_ship_details %>%
+        mutate(
+          Navigational_Status = navigational_status,
+          Speed = speed,
+          Course = course,
+          Area = area
+        )
+      # -- UPDATED
       
-      ship_details <- existing_ship_details
+      # Append the new Latitude and Longitude as new columns
+      #existing_ship_details[[paste0("LAT_", start_timestamp)]] <- latitude
+      #existing_ship_details[[paste0("LON_", start_timestamp)]] <- longitude
+      
+      #ship_details <- existing_ship_details
+      updated_ship_details[[paste0("LAT_", start_timestamp)]] <- latitude
+      updated_ship_details[[paste0("LON_", start_timestamp)]] <- longitude
+      
+      ship_details <- updated_ship_details
+      
     } else {
       ship_details <- data.frame(
         IMO = imo_vector[counter],
